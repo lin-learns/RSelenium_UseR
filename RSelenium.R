@@ -70,10 +70,12 @@ library(tidyverse)
 
 # Starting your Selenium Server i debug
 
-# docker run --name chrome -d -p 4445:4444 -p 5901:5900 selenium/standalone-chrome-debug:latest
+# docker run --name chrome  
+#    -v /dev/shm:/dev/shm -d -p 4445:4444 -p 5901:5900 selenium/standalone-chrome-debug:latest
 # sudo docker ps
 
 # * `-name` name your container, otherwise docker will ;-)
+# * `-v` mount volume
 # * `-d` detached mode
 # * `-p` port mapping (external:internal)
 # * if on external server: `127.0.0.1:port:port`
@@ -198,7 +200,7 @@ remDr %>% navi(., "www.google.com")
 
 ## Extending your wine knowledge
 
-# South Africa is famous for its wines! Lets find out a little bit more about the wine region 
+# Australia is famous for its wines! Lets find out a little bit more about the wine region 
 # 
 # > * Go to vivino.com
 # > * Collect 2 pages worth of information
@@ -260,20 +262,16 @@ pg <- remDr$getPageSource() %>% .[[1]] %>%
   read_html()
 
 collect_info <- function(pg){
-  # Get Farm Information
-  farm <- pg %>% html_nodes("a.anchor__anchor--3lfA6.vintageTitle__winery--2YoIr") %>% 
+  farm <- pg %>% html_nodes(".vintageTitle__winery--2YoIr") %>% 
     html_text()
   
-  # Get Wine Information
-  wine <- pg %>% html_nodes("a.anchor__anchor--3lfA6.vintageTitle__wine--U7t9G") %>% 
+  wine <- pg %>% html_nodes(".vintageTitle__wine--U7t9G") %>% 
     html_text()
   
-  # Get Rating Information
   rating <- pg %>% html_nodes("span.vivinoRating__rating--4Oti3") %>% 
     html_text() %>% 
     as.numeric
   
-  # Get Rating Count Information
   rating_count <- pg %>% html_nodes("span.vivinoRating__ratingCount--NmiVg") %>% 
     html_text() %>% 
     gsub("[^0-9]", "",.) %>% 
@@ -281,6 +279,9 @@ collect_info <- function(pg){
   
   data.frame(farm, wine, rating, rating_count)
 }
+
+collect_info(pg)
+
 
 collect_info(pg)
 # ------------------------------#
