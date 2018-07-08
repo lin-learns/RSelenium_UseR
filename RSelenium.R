@@ -66,6 +66,8 @@ library(tidyverse)
 # > Quick up and down 
 
 # Get your environment setup
+# sudo groupadd docker
+# sudo usermod -aG docker $USER
 # sudo docker pull selenium/standalone-chrome-debug
 
 # Starting your Selenium Server i debug
