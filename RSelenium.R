@@ -72,8 +72,13 @@ library(tidyverse)
 
 # Starting your Selenium Server i debug
 
-# docker run --name chrome  
-#    -v /dev/shm:/dev/shm -d -p 4445:4444 -p 5901:5900 selenium/standalone-chrome-debug:latest
+# docker run --name chrome -v /dev/shm:/dev/shm -d -p 4445:4444 -p 5901:5900 selenium/standalone-chrome-debug:latest
+# add swap if needed:
+# sudo fallocate -l 3G /swapfile
+# sudo chmod 600 /swapfile
+# sudo mkswap /swapfile
+# sudo swapon /swapfile
+# sudo cp /etc/fstab /etc/fstab.bak
 # sudo docker ps
 
 # * `-name` name your container, otherwise docker will ;-)
