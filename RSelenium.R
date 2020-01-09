@@ -115,6 +115,8 @@ remDr$open()
 remDr$navigate("http://www.google.com")
 remDr$navigate("http://www.bing.com")
 
+pg <- remDr$navigate("https://en.wikipedia.org/wiki/Rugby_World_Cup")
+
 # Use methods back and forward to jump between pages
 remDr$goBack()
 remDr$goForward()
@@ -124,11 +126,20 @@ remDr$goForward()
 # -------------------------------------
 
 # We can send various keys to the Selenium
-RSelenium:::selKeys %>% names()
+rs_keynames <- RSelenium:::selKeys %>% names()
+
+remDr$navigate("https://en.wikipedia.org/wiki/Rugby_World_Cup")
+
+webElem <- remDr$findElement("css", "body")
+
+webElem$sendKeysToElement( list
+                           (key = 'page_down' ) )
 
 # Note the notation of the command object$method(list = "command)
-remDr$sendKeysToActiveElement(list(key = "page_down"))
-remDr$sendKeysToActiveElement(list(key = "page_up"))
+webElem$sendKeysToElement(list(key = "page_down"))
+webElem$sendKeysToElement(list(key = "page_up"))
+
+webElem$sendKeysToElement(list(key = "home"))
 
 # We also send Javascript to the page - this becomes important if you want to know how far down you have scrolled...
 remDr$executeScript("return window.scrollY", args = list(1))
@@ -137,8 +148,8 @@ remDr$executeScript("return document.body.scrollHeight", args = list(1))
 remDr$executeScript("return window.innerHeight", args = list(1))
 remDr$executeScript("return window.innerWidth", args = list(1))
 
-remDr$sendKeysToActiveElement(list(key = "home"))
-remDr$sendKeysToActiveElement(list(key = "end"))
+webElem$sendKeysToElement(list(key = "home"))
+webElem$sendKeysToElement(list(key = "end"))
 
 # -------------------------------------
 # Interacting with the DOM
